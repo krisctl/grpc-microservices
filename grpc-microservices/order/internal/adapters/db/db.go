@@ -66,7 +66,24 @@ func (dba DbAdapter) Get(id string) (domain.Order, error) {
 	return order, nil
 }
 
-func (dba DbAdapter) Save(domain.Order) error {
-	// implementation here
-	return nil
+func (dba DbAdapter) Save(order domain.Order) error {
+	// Transform from domain model to Gorm model and then
+	// call dba.db.Save to save into database
+	var orderItems []OrderItem
+	for _, item := range order.OrderItems {
+		orderItems = append(orderItems,
+			OrderItem{
+				ProductCode: item.ProductCode,
+				Quantity:    item.Quantity,
+				UnitPrice:   item.UnitPrice})
+	}
+	orderModel := Order{
+		CustomerID: order.CustomerID,
+		Status:     order.Status,
+		OrderItems: orderItems}
+	res := dba.db.Create(&orderModel)
+	if res.Error == nil {
+		order.ID = int64(orderModel.ID) // why writing it in order.Id, seems unused
+	}
+	return res.Error
 }
