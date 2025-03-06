@@ -1,0 +1,19 @@
+// IDL - interface definition language
+syntax = "proto3";
+
+// Package name of the generated source code
+option go_package="github.com/krisctl/grpc-microservices/payment";
+
+// Message sent from the cart service to the payment service
+message CreatePaymentRequest {
+    float price = 1;
+}
+
+// Message sent from the payment service to cart service
+message CreatePaymentResponse {
+    int64 bill_id = 1;
+}
+
+service Payment {
+    rpc Create (CreatePaymentRequest) returns (CreatePaymentResponse);
+}
