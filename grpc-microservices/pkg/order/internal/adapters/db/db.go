@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/krisctl/grpc-microservices/order/internal/application/core/domain"
+	"github.com/krisctl/grpc-microservices/pkg/order/internal/application/core/domain"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

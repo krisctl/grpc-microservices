@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/krisctl/grpc-microservices/order/internal/application/core/domain"
-	"github.com/krisctl/grpc-microservices/order/internal/ports"
+	"github.com/krisctl/grpc-microservices/pkg/order/internal/application/core/domain"
+	"github.com/krisctl/grpc-microservices/pkg/order/internal/ports"
 )
 
 // Implcitly implements APIPort interface
@@ -10,7 +10,7 @@ type Application struct {
 	db ports.DbPort
 }
 
-func NewApplication(db ports.DbPort) (*Application) {
+func NewApplication(db ports.DbPort) *Application {
 	return &Application{db: db}
 }
 
