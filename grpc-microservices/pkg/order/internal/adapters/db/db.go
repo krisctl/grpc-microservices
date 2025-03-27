@@ -54,7 +54,8 @@ func (dba DbAdapter) Get(id string) (domain.Order, error) {
 		orderItems = append(orderItems, domain.OrderItem{
 			ProductCode: orderItem.ProductCode,
 			UnitPrice:   orderItem.UnitPrice,
-			Quantity:    orderItem.Quantity})
+			Quantity:    orderItem.Quantity,
+		})
 	}
 	// Converting from gorm model to domain model
 	order := domain.Order{
@@ -62,11 +63,12 @@ func (dba DbAdapter) Get(id string) (domain.Order, error) {
 		CustomerID: orderEntity.CustomerID,
 		Status:     orderEntity.Status,
 		OrderItems: orderItems,
-		CreatedAt:  orderEntity.CreatedAt.UnixNano()}
+		CreatedAt:  orderEntity.CreatedAt.UnixNano(),
+	}
 	return order, nil
 }
 
-func (dba DbAdapter) Save(order domain.Order) error {
+func (dba DbAdapter) Save(order *domain.Order) error {
 	// Transform from domain model to Gorm model and then
 	// call dba.db.Save to save into database
 	var orderItems []OrderItem
@@ -75,15 +77,17 @@ func (dba DbAdapter) Save(order domain.Order) error {
 			OrderItem{
 				ProductCode: item.ProductCode,
 				Quantity:    item.Quantity,
-				UnitPrice:   item.UnitPrice})
+				UnitPrice:   item.UnitPrice,
+			})
 	}
 	orderModel := Order{
 		CustomerID: order.CustomerID,
 		Status:     order.Status,
-		OrderItems: orderItems}
+		OrderItems: orderItems,
+	}
 	res := dba.db.Create(&orderModel)
 	if res.Error == nil {
-		order.ID = int64(orderModel.ID) // why writing it in order.Id, seems unused
+		order.ID = int64(orderModel.ID)
 	}
 	return res.Error
 }

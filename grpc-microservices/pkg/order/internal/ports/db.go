@@ -4,5 +4,5 @@ import "github.com/krisctl/grpc-microservices/pkg/order/internal/application/cor
 
 type DbPort interface {
 	Get(id string) (domain.Order, error)
-	Save(domain.Order) error
+	Save(*domain.Order) error
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/krisctl/grpc-microservices/pkg/order/internal/ports"
 )
 
-// Implcitly implements APIPort interface
+// Implicitly implements APIPort interface
 type Application struct {
 	db ports.DbPort
 }
@@ -15,7 +15,7 @@ func NewApplication(db ports.DbPort) *Application {
 }
 
 func (a Application) PlaceOrder(order domain.Order) (domain.Order, error) {
-	err := a.db.Save(order)
+	err := a.db.Save(&order)
 	if err != nil {
 		return domain.Order{}, err
 	}
